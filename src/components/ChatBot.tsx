@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Bot, Send, User } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/components/ui/use-toast";
 
 interface Message {
   type: "user" | "bot";
@@ -17,22 +19,39 @@ const ChatBot = () => {
     },
   ]);
   const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
 
   const handleSend = async () => {
-    if (!input.trim()) return;
+    if (!input.trim() || isLoading) return;
 
     const userMessage = { type: "user" as const, content: input };
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
+    setIsLoading(true);
 
-    // Simulate AI response (replace with actual AI integration)
-    setTimeout(() => {
+    try {
+      const { data, error } = await supabase.functions.invoke('chat', {
+        body: { message: input }
+      });
+
+      if (error) throw error;
+
       const botMessage = {
         type: "bot" as const,
-        content: "I'm a simulated response. The AI integration will be added in the next version!",
+        content: data.reply,
       };
       setMessages((prev) => [...prev, botMessage]);
-    }, 1000);
+    } catch (error) {
+      console.error('Chat error:', error);
+      toast({
+        title: "Error",
+        description: "Failed to get response from AI. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -80,8 +99,13 @@ const ChatBot = () => {
           onKeyPress={(e) => e.key === "Enter" && handleSend()}
           placeholder="Ask me anything..."
           className="bg-black/20 border-forest-light"
+          disabled={isLoading}
         />
-        <Button onClick={handleSend} className="bg-quantum hover:bg-quantum-glow">
+        <Button 
+          onClick={handleSend} 
+          className="bg-quantum hover:bg-quantum-glow"
+          disabled={isLoading}
+        >
           <Send className="h-4 w-4" />
         </Button>
       </div>

@@ -17,6 +17,14 @@ serve(async (req) => {
   try {
     const { message } = await req.json();
 
+    if (!message) {
+      throw new Error('Message is required');
+    }
+
+    if (!deepseekApiKey) {
+      throw new Error('Deepseek API key is not configured');
+    }
+
     console.log('Received message:', message);
 
     const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
@@ -41,8 +49,19 @@ serve(async (req) => {
 
     console.log('Deepseek API response status:', response.status);
 
+    if (!response.ok) {
+      const errorData = await response.text();
+      console.error('Deepseek API error:', errorData);
+      throw new Error(`Deepseek API error: ${response.status} ${errorData}`);
+    }
+
     const data = await response.json();
     console.log('Deepseek API response:', data);
+
+    if (!data.choices || !data.choices[0] || !data.choices[0].message) {
+      console.error('Unexpected API response format:', data);
+      throw new Error('Invalid response format from Deepseek API');
+    }
 
     return new Response(JSON.stringify({ reply: data.choices[0].message.content }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },

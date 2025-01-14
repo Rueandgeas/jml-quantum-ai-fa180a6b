@@ -29,7 +29,7 @@ const CyberpunkGirl = () => {
           className="relative w-full h-full"
         >
           <img
-            src="/lovable-uploads/f85f2aeb-8534-432d-97cb-8048018ed5dc.png"
+            src="/lovable-uploads/4c853cff-a225-4ebf-a08f-4e51a0643c44.png"
             alt="Cyberpunk Girl"
             className="w-full h-full object-contain"
           />

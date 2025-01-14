@@ -7,7 +7,7 @@ const CyberpunkGirl = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1 }}
-      className="fixed left-0 bottom-0 z-20 w-[450px] h-[900px] pointer-events-none"
+      className="fixed left-0 bottom-0 z-20 w-[600px] h-[1200px] pointer-events-none"
     >
       <div className="relative w-full h-full">
         {/* Glowing Aura Effect */}

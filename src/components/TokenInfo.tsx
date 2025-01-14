@@ -81,6 +81,14 @@ const TokenInfo: React.FC = () => {
           <ExternalLink className="mr-2 h-5 w-5" />
           DexScreener
         </Button>
+        <Button
+          variant="outline"
+          className="flex-1 bg-forest hover:bg-forest-light text-white text-lg py-6"
+          onClick={() => window.open(settings.pump_fun_url + settings.contract_address, "_blank")}
+        >
+          <ExternalLink className="mr-2 h-5 w-5" />
+          Pump.fun
+        </Button>
       </div>
     </div>
   );

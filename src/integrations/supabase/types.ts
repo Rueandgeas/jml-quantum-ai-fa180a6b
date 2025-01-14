@@ -39,6 +39,7 @@ export type Database = {
           dexscreener_url: string
           dextools_url: string
           id: string
+          pump_fun_url: string
           updated_at: string | null
         }
         Insert: {
@@ -46,6 +47,7 @@ export type Database = {
           dexscreener_url: string
           dextools_url: string
           id?: string
+          pump_fun_url?: string
           updated_at?: string | null
         }
         Update: {
@@ -53,6 +55,7 @@ export type Database = {
           dexscreener_url?: string
           dextools_url?: string
           id?: string
+          pump_fun_url?: string
           updated_at?: string | null
         }
         Relationships: []

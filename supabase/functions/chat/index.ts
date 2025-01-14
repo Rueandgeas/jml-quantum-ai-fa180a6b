@@ -1,7 +1,7 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
-const deepseekApiKey = Deno.env.get('DEEPSEEK_API_KEY');
+const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -21,22 +21,22 @@ serve(async (req) => {
       throw new Error('Message is required');
     }
 
-    if (!deepseekApiKey) {
-      console.error('Deepseek API key is not configured');
-      throw new Error('Deepseek API key is not configured');
+    if (!openAIApiKey) {
+      console.error('OpenAI API key is not configured');
+      throw new Error('OpenAI API key is not configured');
     }
 
     console.log('Received message:', message);
-    console.log('API Key exists:', !!deepseekApiKey);
+    console.log('API Key exists:', !!openAIApiKey);
 
-    const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${deepseekApiKey.trim()}`,
+        'Authorization': `Bearer ${openAIApiKey.trim()}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'deepseek-chat',
+        model: 'gpt-4o-mini',
         messages: [
           {
             role: 'system',
@@ -49,26 +49,18 @@ serve(async (req) => {
       }),
     });
 
-    console.log('Deepseek API response status:', response.status);
+    console.log('OpenAI API response status:', response.status);
     
-    const responseText = await response.text();
-    console.log('Raw API response:', responseText);
+    const data = await response.json();
+    console.log('API response:', data);
 
     if (!response.ok) {
-      throw new Error(`Deepseek API error: ${response.status} ${responseText}`);
-    }
-
-    let data;
-    try {
-      data = JSON.parse(responseText);
-    } catch (e) {
-      console.error('Failed to parse API response:', e);
-      throw new Error('Invalid JSON response from Deepseek API');
+      throw new Error(`OpenAI API error: ${response.status} ${JSON.stringify(data)}`);
     }
 
     if (!data.choices?.[0]?.message?.content) {
       console.error('Unexpected API response format:', data);
-      throw new Error('Invalid response format from Deepseek API');
+      throw new Error('Invalid response format from OpenAI API');
     }
 
     return new Response(JSON.stringify({ reply: data.choices[0].message.content }), {

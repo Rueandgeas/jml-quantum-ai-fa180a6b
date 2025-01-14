@@ -13,75 +13,53 @@ const Particles = () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    const particles: Array<{
-      x: number;
-      y: number;
-      size: number;
-      speedX: number;
-      speedY: number;
-      opacity: number;
-    }> = [];
+    const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
+    const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const nums = '0123456789';
+    const alphabet = katakana + latin + nums;
 
-    const createParticle = () => {
-      return {
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        size: Math.random() * 3 + 1,
-        speedX: Math.random() * 2 - 1,
-        speedY: Math.random() * 2 - 1,
-        opacity: Math.random(),
-      };
-    };
+    const fontSize = 16;
+    const columns = canvas.width / fontSize;
 
-    // Create initial particles
-    for (let i = 0; i < 50; i++) {
-      particles.push(createParticle());
+    const rainDrops: number[] = [];
+
+    for (let x = 0; x < columns; x++) {
+      rainDrops[x] = 1;
     }
 
-    const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const draw = () => {
+      ctx.fillStyle = 'rgba(45, 90, 39, 0.05)'; // Forest green with opacity
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      particles.forEach((particle) => {
-        particle.x += particle.speedX;
-        particle.y += particle.speedY;
-        particle.opacity += Math.random() * 0.02 - 0.01;
+      ctx.fillStyle = '#4ADE80'; // Quantum green color
+      ctx.font = fontSize + 'px monospace';
 
-        if (particle.opacity < 0) particle.opacity = 0;
-        if (particle.opacity > 1) particle.opacity = 1;
+      for (let i = 0; i < rainDrops.length; i++) {
+        const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+        ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
 
-        ctx.beginPath();
-        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(163, 230, 53, ${particle.opacity})`;
-        ctx.fill();
-
-        // Reset particle if it goes off screen
-        if (
-          particle.x < 0 ||
-          particle.x > canvas.width ||
-          particle.y < 0 ||
-          particle.y > canvas.height
-        ) {
-          const newParticle = createParticle();
-          particle.x = newParticle.x;
-          particle.y = newParticle.y;
-          particle.speedX = newParticle.speedX;
-          particle.speedY = newParticle.speedY;
+        if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          rainDrops[i] = 0;
         }
-      });
-
-      requestAnimationFrame(animate);
+        rainDrops[i]++;
+      }
     };
 
-    animate();
+    const interval = setInterval(draw, 30);
 
     const handleResize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
+      const columns = canvas.width / fontSize;
+      for (let x = 0; x < columns; x++) {
+        rainDrops[x] = 1;
+      }
     };
 
     window.addEventListener("resize", handleResize);
 
     return () => {
+      clearInterval(interval);
       window.removeEventListener("resize", handleResize);
     };
   }, []);

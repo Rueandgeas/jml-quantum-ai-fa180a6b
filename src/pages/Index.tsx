@@ -21,12 +21,16 @@ const Index = () => {
         className="fixed top-4 right-4 z-50"
       >
         <div className="relative group">
-          <div className="w-12 h-12 rounded-full bg-quantum-glow flex items-center justify-center animate-pulse cursor-pointer">
-            <Bot className="w-6 h-6 text-forest-dark" />
+          <div className="w-16 h-16 rounded-full bg-quantum-glow/10 flex items-center justify-center animate-pulse cursor-pointer overflow-hidden border-2 border-quantum-glow">
+            <img 
+              src="/lovable-uploads/159cf220-572e-4887-8355-ef9bbff3dec3.png" 
+              alt="AI Assistant"
+              className="w-full h-full object-cover"
+            />
           </div>
           <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 scale-0 group-hover:scale-100 transition-transform">
             <div className="bg-quantum-glow text-forest-dark text-xs px-2 py-1 rounded whitespace-nowrap">
-              AI Assistant
+              Quantum AI Assistant
             </div>
           </div>
         </div>

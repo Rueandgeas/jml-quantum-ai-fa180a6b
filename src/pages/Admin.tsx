@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -40,10 +40,13 @@ const Admin = () => {
       if (error) throw error;
       return data;
     },
-    onSuccess: (data) => {
-      setFormData(data);
-    },
   });
+
+  useEffect(() => {
+    if (settings) {
+      setFormData(settings);
+    }
+  }, [settings]);
 
   // Update settings mutation
   const updateSettings = useMutation({
@@ -87,9 +90,9 @@ const Admin = () => {
   };
 
   // Check auth on mount
-  useState(() => {
+  useEffect(() => {
     checkAuth();
-  });
+  }, []);
 
   if (isLoading) {
     return <div className="p-8">Loading...</div>;

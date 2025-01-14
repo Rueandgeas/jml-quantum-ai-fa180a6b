@@ -18,6 +18,9 @@ export default {
       },
     },
     extend: {
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+      },
       colors: {
         forest: {
           DEFAULT: "#2D5A27",

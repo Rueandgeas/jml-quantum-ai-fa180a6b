@@ -6,14 +6,16 @@ import TokenInfo from "@/components/TokenInfo";
 import ChatBot from "@/components/ChatBot";
 import { motion } from "framer-motion";
 import CyberBees from "@/components/CyberBees";
+import CyberpunkGirl from "@/components/CyberpunkGirl";
 
 const Index = () => {
   const contractAddress = "0x742d35Cc6634C0532925a3b844Bc454e4438f44e";
 
   return (
-    <div className="min-h-screen bg-forest-dark text-white relative">
+    <div className="min-h-screen bg-forest-dark text-white relative overflow-hidden">
       <Particles />
       <CyberBees />
+      <CyberpunkGirl />
       
       {/* AI Agent Avatar */}
       <motion.div

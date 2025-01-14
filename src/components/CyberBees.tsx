@@ -32,13 +32,13 @@ const CyberBees = () => {
           }}
           className="absolute"
         >
-          <div className="relative w-12 h-12">
+          <div className="relative w-16 h-16">
             <img 
-              src="/lovable-uploads/449af55a-2ce2-4740-8d13-c7a7f6cbebcf.png"
+              src="/lovable-uploads/b24c7f38-e78c-4405-960d-8857633e2681.png"
               alt="Cyber Bee"
               className="w-full h-full object-contain"
             />
-            <div className="absolute inset-0 bg-quantum-glow/20 blur-sm rounded-full animate-pulse" />
+            <div className="absolute inset-0 bg-green-500/20 blur-sm rounded-full animate-pulse" />
           </div>
         </motion.div>
       ))}

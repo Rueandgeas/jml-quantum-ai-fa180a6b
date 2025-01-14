@@ -39,8 +39,8 @@ const TokenInfo: React.FC<TokenInfoProps> = ({ contractAddress }) => {
   return (
     <div className="bg-forest-dark/80 backdrop-blur-lg rounded-lg p-6 space-y-4">
       <h2 className="text-2xl font-bold text-quantum-glow mb-4">Contract Address</h2>
-      <div className="flex items-center space-x-2 bg-black/20 p-3 rounded-lg">
-        <code className="text-sm text-quantum-DEFAULT flex-1 break-all">
+      <div className="flex items-center space-x-2 bg-black/20 p-4 rounded-lg">
+        <code className="text-lg md:text-xl text-quantum-DEFAULT flex-1 break-all font-mono">
           {contractAddress}
         </code>
         <Button
@@ -49,24 +49,24 @@ const TokenInfo: React.FC<TokenInfoProps> = ({ contractAddress }) => {
           onClick={copyToClipboard}
           className="hover:bg-quantum-DEFAULT/20"
         >
-          <Copy className="h-4 w-4" />
+          <Copy className="h-5 w-5" />
         </Button>
       </div>
       <div className="flex flex-col sm:flex-row gap-4 mt-4">
         <Button
           variant="outline"
-          className="flex-1 bg-forest hover:bg-forest-light text-white"
+          className="flex-1 bg-forest hover:bg-forest-light text-white text-lg py-6"
           onClick={() => window.open(getDexToolsLink(), "_blank")}
         >
-          <ExternalLink className="mr-2 h-4 w-4" />
+          <ExternalLink className="mr-2 h-5 w-5" />
           DexTools
         </Button>
         <Button
           variant="outline"
-          className="flex-1 bg-forest hover:bg-forest-light text-white"
+          className="flex-1 bg-forest hover:bg-forest-light text-white text-lg py-6"
           onClick={() => window.open(getDexScreenerLink(), "_blank")}
         >
-          <ExternalLink className="mr-2 h-4 w-4" />
+          <ExternalLink className="mr-2 h-5 w-5" />
           DexScreener
         </Button>
       </div>

@@ -7,7 +7,7 @@ const CyberpunkGirl = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1 }}
-      className="fixed left-1/2 bottom-0 -translate-x-1/2 z-20 w-[500px] h-[800px] pointer-events-none"
+      className="fixed left-1/2 bottom-0 -translate-x-1/2 z-20 w-[300px] h-[500px] pointer-events-none"
     >
       <div className="relative w-full h-full">
         {/* Glowing Aura Effect */}
@@ -18,17 +18,18 @@ const CyberpunkGirl = () => {
         {/* Cyberpunk Girl Image */}
         <motion.div
           animate={{
-            y: [0, -10, 0],
+            x: [0, 200, 200, -200, -200, 0],
+            y: [0, -100, -300, -300, -100, 0],
           }}
           transition={{
-            duration: 4,
+            duration: 20,
             repeat: Infinity,
-            ease: "easeInOut",
+            ease: "linear",
           }}
           className="relative w-full h-full"
         >
           <img
-            src="/lovable-uploads/b24c7f38-e78c-4405-960d-8857633e2681.png"
+            src="/lovable-uploads/f85f2aeb-8534-432d-97cb-8048018ed5dc.png"
             alt="Cyberpunk Girl"
             className="w-full h-full object-contain"
           />

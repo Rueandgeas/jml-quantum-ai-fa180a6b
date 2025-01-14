@@ -22,15 +22,17 @@ serve(async (req) => {
     }
 
     if (!deepseekApiKey) {
+      console.error('Deepseek API key is not configured');
       throw new Error('Deepseek API key is not configured');
     }
 
     console.log('Received message:', message);
+    console.log('API Key exists:', !!deepseekApiKey);
 
     const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${deepseekApiKey}`,
+        'Authorization': `Bearer ${deepseekApiKey.trim()}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -48,17 +50,23 @@ serve(async (req) => {
     });
 
     console.log('Deepseek API response status:', response.status);
+    
+    const responseText = await response.text();
+    console.log('Raw API response:', responseText);
 
     if (!response.ok) {
-      const errorData = await response.text();
-      console.error('Deepseek API error:', errorData);
-      throw new Error(`Deepseek API error: ${response.status} ${errorData}`);
+      throw new Error(`Deepseek API error: ${response.status} ${responseText}`);
     }
 
-    const data = await response.json();
-    console.log('Deepseek API response:', data);
+    let data;
+    try {
+      data = JSON.parse(responseText);
+    } catch (e) {
+      console.error('Failed to parse API response:', e);
+      throw new Error('Invalid JSON response from Deepseek API');
+    }
 
-    if (!data.choices || !data.choices[0] || !data.choices[0].message) {
+    if (!data.choices?.[0]?.message?.content) {
       console.error('Unexpected API response format:', data);
       throw new Error('Invalid response format from Deepseek API');
     }

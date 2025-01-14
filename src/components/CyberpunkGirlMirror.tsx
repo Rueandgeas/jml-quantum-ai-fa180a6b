@@ -29,7 +29,7 @@ const CyberpunkGirlMirror = () => {
           className="relative w-full h-full"
         >
           <img
-            src="/lovable-uploads/4c853cff-a225-4ebf-a08f-4e51a0643c44.png"
+            src="/lovable-uploads/93866fe4-b5de-4406-91d3-d82599d19905.png"
             alt="Cyberpunk Girl Mirror"
             className="w-full h-full object-contain"
           />

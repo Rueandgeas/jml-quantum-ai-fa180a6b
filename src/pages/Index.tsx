@@ -90,7 +90,7 @@ const Index = () => {
               <Button
                 variant="outline"
                 className="w-full bg-forest hover:bg-forest-light text-white"
-                onClick={() => window.open("https://twitter.com/your-handle", "_blank")}
+                onClick={() => window.open("https://x.com/J7ML8o9b5mE0Zcg", "_blank")}
               >
                 <Twitter className="mr-2 h-4 w-4" />
                 Follow on Twitter
@@ -98,7 +98,7 @@ const Index = () => {
               <Button
                 variant="outline"
                 className="w-full bg-forest hover:bg-forest-light text-white"
-                onClick={() => window.open("https://t.me/your-telegram", "_blank")}
+                onClick={() => window.open("https://t.me/Jmlquantumai", "_blank")}
               >
                 <MessageCircle className="mr-2 h-4 w-4" />
                 Join Telegram

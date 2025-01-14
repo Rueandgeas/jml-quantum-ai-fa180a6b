@@ -51,12 +51,14 @@ serve(async (req) => {
 
     console.log('Deepseek API response status:', response.status);
     
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Deepseek API error details:', errorData);
+      throw new Error(`Deepseek API error: ${response.status} ${JSON.stringify(errorData)}`);
+    }
+
     const data = await response.json();
     console.log('API response:', data);
-
-    if (!response.ok) {
-      throw new Error(`Deepseek API error: ${response.status} ${JSON.stringify(data)}`);
-    }
 
     if (!data.choices?.[0]?.message?.content) {
       console.error('Unexpected API response format:', data);

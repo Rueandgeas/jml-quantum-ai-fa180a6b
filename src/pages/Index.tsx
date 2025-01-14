@@ -7,6 +7,7 @@ import ChatBot from "@/components/ChatBot";
 import { motion } from "framer-motion";
 import CyberBees from "@/components/CyberBees";
 import CyberpunkGirl from "@/components/CyberpunkGirl";
+import CyberpunkGirlMirror from "@/components/CyberpunkGirlMirror";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -35,6 +36,7 @@ const Index = () => {
       <Particles />
       <CyberBees />
       <CyberpunkGirl />
+      <CyberpunkGirlMirror />
       
       {/* Scroll Down Button */}
       <motion.button

@@ -7,9 +7,10 @@ const CyberpunkGirlMirror = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1 }}
-      className="fixed right-0 bottom-0 z-20 w-[500px] h-[800px] pointer-events-none"
+      className="absolute right-0 bottom-0 z-20 w-[400px] pointer-events-none"
+      style={{ marginBottom: '-2px' }}
     >
-      <div className="relative w-full h-full">
+      <div className="relative w-full">
         {/* Glowing Aura Effect */}
         <div className="absolute inset-0 animate-pulse">
           <div className="absolute inset-0 bg-gradient-radial from-quantum-glow/20 to-transparent rounded-full filter blur-xl"></div>
@@ -25,12 +26,12 @@ const CyberpunkGirlMirror = () => {
             repeat: Infinity,
             ease: "easeInOut",
           }}
-          className="relative w-full h-full"
+          className="relative w-full flex items-end"
         >
           <img
             src="/lovable-uploads/7386d92d-eac1-40cc-9223-c2e12e3c4de8.png"
             alt="Cyberpunk Girl Mirror"
-            className="w-full h-full object-contain"
+            className="w-full h-auto object-contain"
           />
           
           {/* Glowing Circuit Patterns */}

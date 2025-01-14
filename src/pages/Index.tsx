@@ -83,7 +83,7 @@ const Index = () => {
         {/* Main Content */}
         <div className="grid md:grid-cols-2 gap-8">
           <div className="space-y-8">
-            <TokenInfo contract_address={settings?.contract_address} />
+            <TokenInfo />
             
             {/* Social Links */}
             <div className="mt-4">

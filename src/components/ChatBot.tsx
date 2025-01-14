@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -12,60 +12,16 @@ interface Message {
 }
 
 const ChatBot = () => {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>([{
+    type: "bot",
+    content: "Hello! I'm your JML Quantum AI Agent. How can I help you today?",
+  }]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [userId, setUserId] = useState<string | null>(null);
   const { toast } = useToast();
 
-  useEffect(() => {
-    // Check authentication status and get user ID
-    const checkAuth = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        setUserId(user.id);
-        // Fetch message history
-        const { data, error } = await supabase
-          .from('messages')
-          .select('*')
-          .order('created_at', { ascending: true });
-
-        if (error) {
-          console.error('Error fetching messages:', error);
-          toast({
-            title: "Error",
-            description: "Failed to load message history.",
-            variant: "destructive",
-          });
-        } else if (data) {
-          setMessages(data.map(msg => ({
-            type: msg.type as "user" | "bot",
-            content: msg.content
-          })));
-        }
-      } else {
-        // Add initial bot message for non-authenticated users
-        setMessages([{
-          type: "bot",
-          content: "Hello! I'm your JML Quantum AI Agent. Please sign in to start chatting.",
-        }]);
-      }
-    };
-
-    checkAuth();
-  }, [toast]);
-
   const handleSend = async () => {
-    if (!input.trim() || isLoading || !userId) {
-      if (!userId) {
-        toast({
-          title: "Authentication Required",
-          description: "Please sign in to chat with the AI agent.",
-          variant: "destructive",
-        });
-      }
-      return;
-    }
+    if (!input.trim() || isLoading) return;
 
     const userMessage = { type: "user" as const, content: input };
     setMessages((prev) => [...prev, userMessage]);
@@ -74,7 +30,7 @@ const ChatBot = () => {
 
     try {
       const { data, error } = await supabase.functions.invoke('chat', {
-        body: { message: input, userId }
+        body: { message: input }
       });
 
       if (error) throw error;
@@ -139,14 +95,14 @@ const ChatBot = () => {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyPress={(e) => e.key === "Enter" && handleSend()}
-          placeholder={userId ? "Ask me anything..." : "Please sign in to chat..."}
+          placeholder="Ask me anything..."
           className="bg-black/20 border-forest-light"
-          disabled={isLoading || !userId}
+          disabled={isLoading}
         />
         <Button 
           onClick={handleSend} 
           className="bg-quantum hover:bg-quantum-glow"
-          disabled={isLoading || !userId}
+          disabled={isLoading}
         >
           <Send className="h-4 w-4" />
         </Button>

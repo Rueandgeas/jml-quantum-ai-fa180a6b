@@ -1,6 +1,5 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.38.4';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -14,7 +13,7 @@ serve(async (req) => {
   }
 
   try {
-    const { message, userId } = await req.json();
+    const { message } = await req.json();
 
     if (!message) {
       throw new Error('Message is required');
@@ -28,25 +27,6 @@ serve(async (req) => {
 
     console.log('Received message:', message);
     console.log('API Key exists:', !!deepseekApiKey);
-
-    // Create Supabase client
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const supabase = createClient(supabaseUrl, supabaseKey);
-
-    // Store user message
-    const { error: insertError } = await supabase
-      .from('messages')
-      .insert({
-        content: message,
-        type: 'user',
-        user_id: userId
-      });
-
-    if (insertError) {
-      console.error('Error storing user message:', insertError);
-      throw new Error('Failed to store user message');
-    }
 
     // Get response from Deepseek
     const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
@@ -77,20 +57,6 @@ serve(async (req) => {
 
     const data = await response.json();
     const botReply = data.choices[0].message.content;
-
-    // Store bot response
-    const { error: botInsertError } = await supabase
-      .from('messages')
-      .insert({
-        content: botReply,
-        type: 'bot',
-        user_id: userId
-      });
-
-    if (botInsertError) {
-      console.error('Error storing bot message:', botInsertError);
-      throw new Error('Failed to store bot message');
-    }
 
     return new Response(JSON.stringify({ reply: botReply }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },

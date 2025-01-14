@@ -1,5 +1,5 @@
 import React from "react";
-import { Twitter, Bot } from "lucide-react";
+import { Twitter, Bot, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Particles from "@/components/Particles";
 import TokenInfo from "@/components/TokenInfo";
@@ -86,7 +86,7 @@ const Index = () => {
             <TokenInfo />
             
             {/* Social Links */}
-            <div className="mt-4">
+            <div className="mt-4 space-y-4">
               <Button
                 variant="outline"
                 className="w-full bg-forest hover:bg-forest-light text-white"
@@ -94,6 +94,14 @@ const Index = () => {
               >
                 <Twitter className="mr-2 h-4 w-4" />
                 Follow on Twitter
+              </Button>
+              <Button
+                variant="outline"
+                className="w-full bg-forest hover:bg-forest-light text-white"
+                onClick={() => window.open("https://t.me/your-telegram", "_blank")}
+              >
+                <MessageCircle className="mr-2 h-4 w-4" />
+                Join Telegram
               </Button>
             </div>
           </div>

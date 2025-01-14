@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 const CyberBees = () => {
   // Create an array of bees with different animation paths
-  const bees = Array.from({ length: 5 }).map((_, index) => ({
+  const bees = Array.from({ length: 15 }).map((_, index) => ({
     id: index,
     initialX: Math.random() * window.innerWidth,
     initialY: Math.random() * window.innerHeight,

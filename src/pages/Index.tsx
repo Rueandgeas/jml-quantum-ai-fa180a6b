@@ -6,27 +6,16 @@ import TokenInfo from "@/components/TokenInfo";
 import ChatBot from "@/components/ChatBot";
 import { motion } from "framer-motion";
 import CyberBees from "@/components/CyberBees";
-import MatrixRain from "@/components/MatrixRain";
 
 const Index = () => {
   const contractAddress = "0x742d35Cc6634C0532925a3b844Bc454e4438f44e";
 
   return (
     <div className="min-h-screen bg-forest-dark text-white relative">
-      {/* Background Image */}
-      <div 
-        className="fixed inset-0 z-0 bg-cover bg-center bg-no-repeat opacity-40"
-        style={{ 
-          backgroundImage: "url('/lovable-uploads/16d5dfb2-af42-4505-b198-5fe8dd8efa41.png')",
-          filter: "brightness(0.6) contrast(1.2)"
-        }}
-      />
-      
-      <MatrixRain />
       <Particles />
       <CyberBees />
       
-      {/* Rest of the content */}
+      {/* AI Agent Avatar */}
       <motion.div
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}

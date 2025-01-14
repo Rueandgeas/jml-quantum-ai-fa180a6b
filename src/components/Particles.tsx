@@ -13,52 +13,47 @@ const Particles = () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    const particles: Array<{
-      x: number;
-      y: number;
-      radius: number;
-      speedX: number;
-      speedY: number;
-    }> = [];
+    const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
+    const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const nums = '0123456789';
+    const alphabet = katakana + latin + nums;
 
-    // Create particles
-    for (let i = 0; i < 50; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        radius: Math.random() * 2,
-        speedX: (Math.random() - 0.5) * 0.5,
-        speedY: (Math.random() - 0.5) * 0.5,
-      });
+    const fontSize = 16;
+    const columns = canvas.width / fontSize;
+
+    const rainDrops: number[] = [];
+
+    for (let x = 0; x < columns; x++) {
+      rainDrops[x] = 1;
     }
 
     const draw = () => {
-      ctx.fillStyle = 'rgba(45, 90, 39, 0.1)';
+      ctx.fillStyle = 'rgba(45, 90, 39, 0.05)'; // Forest green with opacity
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      particles.forEach((particle) => {
-        ctx.beginPath();
-        ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
-        ctx.fillStyle = '#4ADE80';
-        ctx.fill();
+      ctx.fillStyle = '#4ADE80'; // Quantum green color
+      ctx.font = fontSize + 'px monospace';
 
-        // Update position
-        particle.x += particle.speedX;
-        particle.y += particle.speedY;
+      for (let i = 0; i < rainDrops.length; i++) {
+        const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+        ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
 
-        // Wrap around screen
-        if (particle.x < 0) particle.x = canvas.width;
-        if (particle.x > canvas.width) particle.x = 0;
-        if (particle.y < 0) particle.y = canvas.height;
-        if (particle.y > canvas.height) particle.y = 0;
-      });
+        if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          rainDrops[i] = 0;
+        }
+        rainDrops[i]++;
+      }
     };
 
-    const interval = setInterval(draw, 16);
+    const interval = setInterval(draw, 30);
 
     const handleResize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
+      const columns = canvas.width / fontSize;
+      for (let x = 0; x < columns; x++) {
+        rainDrops[x] = 1;
+      }
     };
 
     window.addEventListener("resize", handleResize);
@@ -72,7 +67,7 @@ const Particles = () => {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 pointer-events-none z-20"
+      className="fixed inset-0 pointer-events-none z-0"
     />
   );
 };

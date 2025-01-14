@@ -16,11 +16,12 @@ const CyberpunkGirl = () => {
         </div>
 
         {/* Cyberpunk Girl Image */}
-        <div className="relative w-full h-full">
+        <div className="relative w-full h-full flex items-end">
           <img
             src="/lovable-uploads/5da8f7cd-1ebc-47a1-a7d0-070168eb9ded.png"
             alt="Cyberpunk Girl"
-            className="w-full h-full object-contain"
+            className="w-full object-contain"
+            style={{ marginBottom: '-2px' }}
           />
           
           {/* Glowing Circuit Patterns */}

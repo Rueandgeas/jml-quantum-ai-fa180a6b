@@ -1,5 +1,5 @@
-import React from "react";
-import { Twitter, Bot, MessageCircle } from "lucide-react";
+import React, { useRef } from "react";
+import { Twitter, Bot, MessageCircle, ArrowDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Particles from "@/components/Particles";
 import TokenInfo from "@/components/TokenInfo";
@@ -9,8 +9,10 @@ import CyberBees from "@/components/CyberBees";
 import CyberpunkGirl from "@/components/CyberpunkGirl";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const Index = () => {
+  const messageRef = useRef<HTMLDivElement>(null);
   const { data: settings } = useQuery({
     queryKey: ["settings"],
     queryFn: async () => {
@@ -24,11 +26,25 @@ const Index = () => {
     },
   });
 
+  const scrollToMessage = () => {
+    messageRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <div className="min-h-screen bg-forest-dark text-white relative overflow-hidden">
       <Particles />
       <CyberBees />
       <CyberpunkGirl />
+      
+      {/* Scroll Down Button */}
+      <motion.button
+        onClick={scrollToMessage}
+        className="fixed bottom-8 right-8 z-50 bg-quantum-glow/20 p-3 rounded-full hover:bg-quantum-glow/40 transition-colors"
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+      >
+        <ArrowDown className="w-6 h-6 text-quantum-glow animate-bounce" />
+      </motion.button>
       
       {/* AI Agent Avatar */}
       <motion.div
@@ -50,26 +66,6 @@ const Index = () => {
               Quantum AI Assistant
             </div>
           </div>
-        </div>
-      </motion.div>
-      
-      {/* Flying Bot */}
-      <motion.div
-        animate={{
-          x: [0, 100, 0],
-          y: [0, -50, 0],
-          rotate: [0, 10, -10, 0],
-        }}
-        transition={{
-          duration: 20,
-          repeat: Infinity,
-          ease: "linear",
-        }}
-        className="fixed top-1/4 left-10 z-20 opacity-60"
-      >
-        <div className="relative">
-          <Bot className="w-8 h-8 text-quantum-glow" />
-          <div className="absolute -bottom-2 w-8 h-1 bg-quantum-glow/20 rounded-full blur-sm animate-pulse" />
         </div>
       </motion.div>
       
@@ -108,6 +104,49 @@ const Index = () => {
           <div>
             <ChatBot />
           </div>
+        </div>
+      </div>
+
+      {/* Message Section */}
+      <div ref={messageRef} className="min-h-screen bg-forest-dark/90 relative z-10">
+        <div className="container mx-auto px-4 py-16">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="max-w-3xl mx-auto"
+          >
+            <h2 className="text-3xl font-bold text-quantum-glow mb-8 text-center">
+              Join the Quantum Revolution
+            </h2>
+            <div className="bg-forest/40 backdrop-blur-lg rounded-lg p-8">
+              <p className="text-lg text-white/90 mb-6">
+                JML Token represents the future of quantum computing in the blockchain space. 
+                Our mission is to bridge the gap between quantum mechanics and decentralized technologies, 
+                creating a new paradigm in the crypto ecosystem.
+              </p>
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="bg-forest-dark/60 p-6 rounded-lg">
+                  <h3 className="text-quantum-glow font-bold mb-2">Innovation</h3>
+                  <p className="text-sm text-white/80">
+                    Leading the way in quantum-inspired blockchain solutions
+                  </p>
+                </div>
+                <div className="bg-forest-dark/60 p-6 rounded-lg">
+                  <h3 className="text-quantum-glow font-bold mb-2">Community</h3>
+                  <p className="text-sm text-white/80">
+                    Building a strong, engaged community of quantum enthusiasts
+                  </p>
+                </div>
+                <div className="bg-forest-dark/60 p-6 rounded-lg">
+                  <h3 className="text-quantum-glow font-bold mb-2">Future</h3>
+                  <p className="text-sm text-white/80">
+                    Shaping the future of decentralized quantum computing
+                  </p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </div>
     </div>

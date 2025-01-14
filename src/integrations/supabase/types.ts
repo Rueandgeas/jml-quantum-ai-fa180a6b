@@ -33,6 +33,30 @@ export type Database = {
         }
         Relationships: []
       }
+      settings: {
+        Row: {
+          contract_address: string
+          dexscreener_url: string
+          dextools_url: string
+          id: string
+          updated_at: string | null
+        }
+        Insert: {
+          contract_address: string
+          dexscreener_url: string
+          dextools_url: string
+          id?: string
+          updated_at?: string | null
+        }
+        Update: {
+          contract_address?: string
+          dexscreener_url?: string
+          dextools_url?: string
+          id?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

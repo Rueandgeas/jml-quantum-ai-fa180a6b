@@ -2,17 +2,29 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 import { Copy, ExternalLink } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
-interface TokenInfoProps {
-  contractAddress: string;
-}
-
-const TokenInfo: React.FC<TokenInfoProps> = ({ contractAddress }) => {
+const TokenInfo: React.FC = () => {
   const [copied, setCopied] = useState(false);
 
+  const { data: settings, isLoading } = useQuery({
+    queryKey: ["settings"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("settings")
+        .select("*")
+        .single();
+      
+      if (error) throw error;
+      return data;
+    },
+  });
+
   const copyToClipboard = async () => {
+    if (!settings?.contract_address) return;
     try {
-      await navigator.clipboard.writeText(contractAddress);
+      await navigator.clipboard.writeText(settings.contract_address);
       setCopied(true);
       toast({
         title: "Copied!",
@@ -28,20 +40,20 @@ const TokenInfo: React.FC<TokenInfoProps> = ({ contractAddress }) => {
     }
   };
 
-  const getDexToolsLink = () => {
-    return `https://www.dextools.io/app/en/ether/pair-explorer/${contractAddress}`;
-  };
+  if (isLoading) {
+    return <div className="bg-forest-dark/80 backdrop-blur-lg rounded-lg p-6">Loading...</div>;
+  }
 
-  const getDexScreenerLink = () => {
-    return `https://dexscreener.com/ethereum/${contractAddress}`;
-  };
+  if (!settings) {
+    return null;
+  }
 
   return (
     <div className="bg-forest-dark/80 backdrop-blur-lg rounded-lg p-6 space-y-4">
       <h2 className="text-2xl font-bold text-quantum-glow mb-4">Contract Address</h2>
       <div className="flex items-center space-x-2 bg-black/20 p-4 rounded-lg">
         <code className="text-lg md:text-xl text-quantum-DEFAULT flex-1 break-all font-mono">
-          {contractAddress}
+          {settings.contract_address}
         </code>
         <Button
           variant="ghost"
@@ -56,7 +68,7 @@ const TokenInfo: React.FC<TokenInfoProps> = ({ contractAddress }) => {
         <Button
           variant="outline"
           className="flex-1 bg-forest hover:bg-forest-light text-white text-lg py-6"
-          onClick={() => window.open(getDexToolsLink(), "_blank")}
+          onClick={() => window.open(settings.dextools_url + settings.contract_address, "_blank")}
         >
           <ExternalLink className="mr-2 h-5 w-5" />
           DexTools
@@ -64,7 +76,7 @@ const TokenInfo: React.FC<TokenInfoProps> = ({ contractAddress }) => {
         <Button
           variant="outline"
           className="flex-1 bg-forest hover:bg-forest-light text-white text-lg py-6"
-          onClick={() => window.open(getDexScreenerLink(), "_blank")}
+          onClick={() => window.open(settings.dexscreener_url + settings.contract_address, "_blank")}
         >
           <ExternalLink className="mr-2 h-5 w-5" />
           DexScreener

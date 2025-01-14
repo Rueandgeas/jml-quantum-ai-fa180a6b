@@ -7,7 +7,6 @@ import ChatBot from "@/components/ChatBot";
 import { motion } from "framer-motion";
 import CyberBees from "@/components/CyberBees";
 import CyberpunkGirl from "@/components/CyberpunkGirl";
-import CyberpunkGirlMirror from "@/components/CyberpunkGirlMirror";
 
 const Index = () => {
   const contractAddress = "0x742d35Cc6634C0532925a3b844Bc454e4438f44e";
@@ -17,7 +16,6 @@ const Index = () => {
       <Particles />
       <CyberBees />
       <CyberpunkGirl />
-      <CyberpunkGirlMirror />
       
       {/* AI Agent Avatar */}
       <motion.div

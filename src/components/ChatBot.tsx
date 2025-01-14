@@ -28,6 +28,9 @@ const ChatBot = () => {
     setInput("");
     setIsLoading(true);
 
+    // Add a temporary "typing" message
+    setMessages((prev) => [...prev, { type: "bot", content: "▋" }]);
+
     try {
       const { data, error } = await supabase.functions.invoke('chat', {
         body: { message: input }
@@ -35,13 +38,18 @@ const ChatBot = () => {
 
       if (error) throw error;
 
-      const botMessage = {
-        type: "bot" as const,
-        content: data.reply,
-      };
-      setMessages((prev) => [...prev, botMessage]);
+      // Remove the typing indicator and add the actual response
+      setMessages((prev) => {
+        const withoutTyping = prev.slice(0, -1); // Remove typing indicator
+        return [...withoutTyping, {
+          type: "bot" as const,
+          content: data.reply,
+        }];
+      });
     } catch (error) {
       console.error('Chat error:', error);
+      // Remove typing indicator in case of error
+      setMessages((prev) => prev.slice(0, -1));
       toast({
         title: "Error",
         description: "Failed to get response from AI. Please try again.",
@@ -82,7 +90,7 @@ const ChatBot = () => {
                   message.type === "user"
                     ? "bg-quantum-DEFAULT/20"
                     : "bg-quantum-glow/20"
-                }`}
+                } ${message.content === "▋" ? "animate-pulse" : ""}`}
               >
                 {message.content}
               </div>
